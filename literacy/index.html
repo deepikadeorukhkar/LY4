@@ -21,6 +21,51 @@ touch-action:none;
 background:#dff6ff;
 }
 
+/* LOGO SCREEN */
+
+#logoScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:white;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+animation:fadeOut 1s ease forwards;
+animation-delay:2.5s;
+}
+
+#logoImg{
+width:260px;
+max-width:70%;
+animation:logoPop 1.2s ease;
+}
+
+@keyframes logoPop{
+0%{
+transform:scale(0.5);
+opacity:0;
+}
+100%{
+transform:scale(1);
+opacity:1;
+}
+}
+
+@keyframes fadeOut{
+from{
+opacity:1;
+visibility:visible;
+}
+to{
+opacity:0;
+visibility:hidden;
+}
+}
+
 #game{
 position:relative;
 width:100vw;
@@ -28,8 +73,6 @@ height:100vh;
 overflow:hidden;
 background:linear-gradient(to bottom,#bde9ff,#fff6cf);
 }
-
-/* WALL */
 
 #wall{
 position:absolute;
@@ -39,8 +82,6 @@ height:72%;
 background:linear-gradient(#fff8ef,#ffeecf);
 }
 
-/* FLOOR */
-
 #floor{
 position:absolute;
 bottom:0;
@@ -48,8 +89,6 @@ width:100%;
 height:28%;
 background:#c98f5c;
 }
-
-/* WINDOWS */
 
 .window{
 position:absolute;
@@ -91,16 +130,12 @@ left:2%;
 right:2%;
 }
 
-/* SUN */
-
 #sun{
 position:absolute;
 top:15px;
 right:18%;
 font-size:75px;
 }
-
-/* TARGET WORD */
 
 #target{
 position:absolute;
@@ -115,8 +150,6 @@ font-weight:bold;
 box-shadow:0 4px 8px rgba(0,0,0,0.25);
 z-index:50;
 }
-
-/* TRAY */
 
 #trayContainer{
 position:absolute;
@@ -138,15 +171,11 @@ color:white;
 margin-bottom:10px;
 }
 
-/* NOTES GRID */
-
 #tray{
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:8px;
 }
-
-/* STICKY NOTES */
 
 .note{
 height:50px;
@@ -169,8 +198,6 @@ transition:transform 0.2s;
 transform:scale(1.08);
 }
 
-/* SOFT BOARD */
-
 #softboard{
 position:absolute;
 top:70px;
@@ -184,8 +211,6 @@ border-radius:18px;
 box-shadow:0 6px 10px rgba(0,0,0,0.3);
 padding:18px;
 }
-
-/* CHART */
 
 #chart{
 width:100%;
@@ -204,8 +229,6 @@ font-weight:bold;
 color:#ff4081;
 margin-bottom:12px;
 }
-
-/* BOXES */
 
 #boxes{
 display:grid;
@@ -227,8 +250,6 @@ font-weight:bold;
 color:#333;
 }
 
-/* FEEDBACK */
-
 #feedback{
 position:absolute;
 top:90px;
@@ -238,8 +259,6 @@ font-size:90px;
 z-index:200;
 pointer-events:none;
 }
-
-/* MESSAGE */
 
 #message{
 position:absolute;
@@ -264,8 +283,6 @@ transform:translateX(-50%) scale(1.1);
 }
 }
 
-/* REPLAY BUTTON */
-
 #replayBtn{
 position:absolute;
 top:300px;
@@ -288,8 +305,6 @@ box-shadow:0 4px 10px rgba(0,0,0,0.3);
 transform:translateX(-50%) scale(0.95);
 }
 
-/* FLOWERS */
-
 .flower{
 position:absolute;
 bottom:15px;
@@ -303,8 +318,6 @@ left:6%;
 #f2{
 right:6%;
 }
-
-/* MOBILE */
 
 @media(max-width:950px){
 
@@ -367,6 +380,11 @@ pointer-events:none;
 
 <body>
 
+<!-- LOGO SCREEN -->
+<div id="logoScreen">
+  <img src="innovine-logo.png" alt="Logo" id="logoImg">
+</div>
+
 <div id="game">
 
 <div id="wall"></div>
@@ -388,26 +406,16 @@ pointer-events:none;
 
 <button id="replayBtn">🔄 Replay Game</button>
 
-<!-- TRAY -->
 <div id="trayContainer">
-
 <div id="trayTitle">Sticky Notes</div>
-
 <div id="tray"></div>
-
 </div>
 
-<!-- BOARD -->
 <div id="softboard">
-
 <div id="chart">
-
 <div id="title">Sight Word Wall</div>
-
 <div id="boxes"></div>
-
 </div>
-
 </div>
 
 <canvas id="confetti"></canvas>
@@ -415,8 +423,6 @@ pointer-events:none;
 </div>
 
 <script>
-
-/* WORDS */
 
 const words=[
 'the','are','to','this',
@@ -428,16 +434,12 @@ const words=[
 let currentIndex=0;
 let currentWord="";
 
-/* ELEMENTS */
-
 const tray=document.getElementById("tray");
 const boxes=document.getElementById("boxes");
 const target=document.getElementById("target");
 const feedback=document.getElementById("feedback");
 const message=document.getElementById("message");
 const replayBtn=document.getElementById("replayBtn");
-
-/* CREATE BOXES */
 
 function createBoxes(){
 
@@ -446,9 +448,7 @@ boxes.innerHTML='';
 for(let i=0;i<16;i++){
 
 const box=document.createElement("div");
-
 box.className="wordBox";
-
 boxes.appendChild(box);
 
 }
@@ -457,17 +457,13 @@ boxes.appendChild(box);
 
 createBoxes();
 
-/* SPEECH */
-
 function speak(text){
 
 if('speechSynthesis' in window){
 
 speechSynthesis.cancel();
 
-const utter=
-new SpeechSynthesisUtterance(text);
-
+const utter=new SpeechSynthesisUtterance(text);
 utter.rate=0.85;
 utter.pitch=1.1;
 
@@ -477,14 +473,11 @@ speechSynthesis.speak(utter);
 
 }
 
-/* SHUFFLE */
-
 function shuffle(arr){
 
 for(let i=arr.length-1;i>0;i--){
 
 const j=Math.floor(Math.random()*(i+1));
-
 [arr[i],arr[j]]=[arr[j],arr[i]];
 
 }
@@ -492,8 +485,6 @@ const j=Math.floor(Math.random()*(i+1));
 return arr;
 
 }
-
-/* CREATE NOTES */
 
 function createNotes(){
 
@@ -514,8 +505,6 @@ tray.appendChild(note);
 });
 
 }
-
-/* DRAG FUNCTION */
 
 function enableDrag(note){
 
@@ -540,23 +529,16 @@ note.style.top=(y-offsetY)+'px';
 }
 
 function end(x,y){
-
 checkDrop(note,x,y);
-
 }
-
-/* MOUSE */
 
 note.addEventListener('mousedown',e=>{
 
 e.preventDefault();
-
 start(e.clientX,e.clientY);
 
 function mouseMove(ev){
-
 move(ev.clientX,ev.clientY);
-
 }
 
 function mouseUp(ev){
@@ -573,40 +555,26 @@ document.addEventListener('mouseup',mouseUp);
 
 });
 
-/* TOUCH */
-
 note.addEventListener('touchstart',e=>{
-
 const t=e.touches[0];
-
 start(t.clientX,t.clientY);
-
 });
 
 note.addEventListener('touchmove',e=>{
-
 const t=e.touches[0];
-
 move(t.clientX,t.clientY);
-
 });
 
 note.addEventListener('touchend',e=>{
-
 const t=e.changedTouches[0];
-
 end(t.clientX,t.clientY);
-
 });
 
 }
 
-/* CHECK DROP */
-
 function checkDrop(note,x,y){
 
-const allBoxes=
-document.querySelectorAll('.wordBox');
+const allBoxes=document.querySelectorAll('.wordBox');
 
 let dropped=false;
 
@@ -625,13 +593,9 @@ box.innerHTML===''
 dropped=true;
 
 if(note.dataset.word===currentWord){
-
 correctAnswer(note,box);
-
 }else{
-
 wrongAnswer(note);
-
 }
 
 }
@@ -639,14 +603,10 @@ wrongAnswer(note);
 });
 
 if(!dropped){
-
 resetNote(note);
-
 }
 
 }
-
-/* RESET */
 
 function resetNote(note){
 
@@ -656,8 +616,6 @@ note.style.top='0px';
 note.style.zIndex='1';
 
 }
-
-/* CORRECT */
 
 function correctAnswer(note,box){
 
@@ -670,7 +628,6 @@ feedback.innerHTML='';
 playCorrect();
 
 box.innerHTML=note.dataset.word;
-
 box.style.background='#fff176';
 
 note.remove();
@@ -678,18 +635,12 @@ note.remove();
 currentIndex++;
 
 if(currentIndex>=words.length){
-
 finishGame();
-
 }else{
-
 setTimeout(nextWord,1000);
-
 }
 
 }
-
-/* WRONG */
 
 function wrongAnswer(note){
 
@@ -703,14 +654,9 @@ playWrong();
 
 resetNote(note);
 
-speak(
-"Try again. Find the word " +
-currentWord
-);
+speak("Try again. Find the word " + currentWord);
 
 }
-
-/* NEXT WORD */
 
 function nextWord(){
 
@@ -721,63 +667,44 @@ target.innerHTML=
 currentWord +
 "</span>";
 
-speak(
-"Find the word " + currentWord
-);
+speak("Find the word " + currentWord);
 
 }
-
-/* FINISH */
 
 function finishGame(){
 
 message.style.display='block';
-
 replayBtn.style.display='block';
 
 playCelebration();
-
 startConfetti();
 
-speak(
-"Good job! You completed the sight word wall."
-);
+speak("Good job! You completed the sight word wall.");
 
 }
-
-/* REPLAY */
 
 function restartGame(){
 
 currentIndex=0;
 
 message.style.display='none';
-
 replayBtn.style.display='none';
-
 feedback.innerHTML='';
 
 createBoxes();
-
 createNotes();
 
 setTimeout(()=>{
-
 nextWord();
-
 },1000);
 
 }
 
 replayBtn.addEventListener('click',restartGame);
 
-/* SOUNDS */
-
 function playCorrect(){
 
-const ctx=
-new(window.AudioContext||
-window.webkitAudioContext)();
+const ctx=new(window.AudioContext||window.webkitAudioContext)();
 
 const osc=ctx.createOscillator();
 const gain=ctx.createGain();
@@ -801,9 +728,7 @@ osc.stop(ctx.currentTime+0.4);
 
 function playWrong(){
 
-const ctx=
-new(window.AudioContext||
-window.webkitAudioContext)();
+const ctx=new(window.AudioContext||window.webkitAudioContext)();
 
 const osc=ctx.createOscillator();
 const gain=ctx.createGain();
@@ -827,9 +752,7 @@ osc.stop(ctx.currentTime+0.5);
 
 function playCelebration(){
 
-const ctx=
-new(window.AudioContext||
-window.webkitAudioContext)();
+const ctx=new(window.AudioContext||window.webkitAudioContext)();
 
 for(let i=0;i<8;i++){
 
@@ -855,13 +778,8 @@ osc.stop(ctx.currentTime+i*0.08+0.5);
 
 }
 
-/* CONFETTI */
-
-const canvas=
-document.getElementById("confetti");
-
-const ctx=
-canvas.getContext("2d");
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
 
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
@@ -897,16 +815,13 @@ ctx.clearRect(0,0,canvas.width,canvas.height);
 confetti.forEach(p=>{
 
 ctx.fillStyle=p.color;
-
 ctx.fillRect(p.x,p.y,p.r,p.r);
 
 p.y+=2;
 p.x+=Math.sin(p.d);
 
 if(p.y>canvas.height){
-
 p.y=-10;
-
 }
 
 });
@@ -915,17 +830,13 @@ requestAnimationFrame(animateConfetti);
 
 }
 
-/* START GAME */
-
 function startGame(){
 
 createNotes();
 
 setTimeout(()=>{
 
-speak(
-"Pin the sight word on the sight word wall."
-);
+speak("Pin the sight word on the sight word wall.");
 
 setTimeout(nextWord,2500);
 
@@ -933,11 +844,12 @@ setTimeout(nextWord,2500);
 
 }
 
+setTimeout(()=>{
 startGame();
+},3000);
 
 </script>
 
 </body>
 </html>
 ```
-
